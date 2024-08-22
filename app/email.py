@@ -2,6 +2,7 @@ from threading import Thread
 from flask import current_app, render_template
 from flask_mail import Message
 from . import mail
+import requests
 
 import requests
 from datetime import datetime
@@ -20,21 +21,11 @@ def send_email(to, subject, template, **kwargs):
     thr.start()
     return thr
 
-def send_simple_message(to, subject, newUser):
-    app = current_app._get_current_object()
-    print('Enviando mensagem (POST)...', flush=True)
-    print('URL: ' + str(app.config['API_URL']), flush=True)
-    print('api: ' + str(app.config['API_KEY']), flush=True)
-    print('from: ' + str(app.config['API_FROM']), flush=True)
-    print('to: ' + str(to), flush=True)
-    print('subject: ' + str(app.config['FLASKY_MAIL_SUBJECT_PREFIX']) + ' ' + subject, flush=True)
-    print('text: ' + "Novo usuário cadastrado: " + newUser, flush=True)
-
-    resposta = requests.post(app.config['API_URL'], 
-                             auth=("api", app.config['API_KEY']), data={"from": app.config['API_FROM'], 
-                                                                        "to": to, 
-                                                                        "subject": app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ' ' + subject, 
-                                                                        "text": "Novo usuário cadastrado: " + newUser})
-        
-    print('Enviando mensagem (Resposta)...' + str(resposta) + ' - ' + datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), flush=True)
-    return resposta
+def send_simple_message():
+  	return requests.post(
+  		"https://api.mailgun.net/v3/sandbox59e2363bd1af4261b42440f4c044d44a.mailgun.org/messages",
+  		auth=("api", "8a399a332e3d31c60c580ba9e43d8927-2b91eb47-b8117fdb"),
+  		data={"from": "Ramon Martins <mailgun@sandbox59e2363bd1af4261b42440f4c044d44a.mailgun.org>",
+  			"to": ["ramonmendoncapiu@gmail.com"],
+  			"subject": "Envio de email avaliacao 80",
+  			"text": "Teste Teste Teste!"})
