@@ -2,7 +2,6 @@ from threading import Thread
 from flask import current_app, render_template
 from flask_mail import Message
 from . import mail
-import requests
 
 import requests
 from datetime import datetime
