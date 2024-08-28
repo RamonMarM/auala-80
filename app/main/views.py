@@ -1,9 +1,8 @@
-from flask import render_template, session, redirect, url_for, current_app
-from .. import db
-from ..models import User
-from ..email import send_email, send_simple_message
-from . import main
-from .forms import NameForm
+from flask import render_template, session, redirect, url_for, flash
+from app import app, db
+from app.main.forms import NameForm
+from app.models import User
+from app.main.email import send_simple_message
 
 
 @app.route('/', methods=['GET', 'POST'])
